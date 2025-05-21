@@ -1,10 +1,10 @@
 package br.com.delta.barramento.client.sworks;
 
 import br.com.delta.barramento.client.sworks.dtos.AuthResponse;
+import br.com.delta.barramento.client.sworks.dtos.ProcessoDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.*;
 
 @FeignClient(name = "SworksClient", url = "${URL_SWORKS}")
 public interface SworksClient {
@@ -14,5 +14,8 @@ public interface SworksClient {
             @RequestPart("username") String username,
             @RequestPart("password") String password
     );
+
+    @GetMapping(value = "/api/v1/Processo/{idProccess}")
+    ProcessoDTO getDetailsProccess(@PathVariable String idProccess, @RequestHeader("Authorization") String authorization);
 
 }

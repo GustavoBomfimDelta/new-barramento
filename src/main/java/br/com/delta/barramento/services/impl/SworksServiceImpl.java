@@ -2,6 +2,7 @@ package br.com.delta.barramento.services.impl;
 
 import br.com.delta.barramento.client.sworks.SworksClient;
 import br.com.delta.barramento.client.sworks.dtos.AuthResponse;
+import br.com.delta.barramento.client.sworks.dtos.ProcessoDTO;
 import br.com.delta.barramento.services.SworksService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -23,5 +24,10 @@ public class SworksServiceImpl implements SworksService {
     @Override
     public AuthResponse authenticate() {
         return sworksClient.getToken(usernameSworks, passwordSworks);
+    }
+
+    @Override
+    public ProcessoDTO obterDetalhesProcessamento(String id, String tokenSworks) {
+        return sworksClient.getDetailsProccess(id, "Bearer " + tokenSworks);
     }
 }
