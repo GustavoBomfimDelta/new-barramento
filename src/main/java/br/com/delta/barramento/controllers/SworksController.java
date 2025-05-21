@@ -1,8 +1,10 @@
 package br.com.delta.barramento.controllers;
 
 import br.com.delta.barramento.client.sworks.dtos.AuthResponse;
+import br.com.delta.barramento.client.sworks.dtos.CriarProcessoResponseDTO;
 import br.com.delta.barramento.client.sworks.dtos.ProcessoDTO;
 import br.com.delta.barramento.dtos.ProcessamentoDetalhesResponseDTO;
+import br.com.delta.barramento.dtos.ProcessoRequestDTO;
 import br.com.delta.barramento.entities.Cliente;
 import br.com.delta.barramento.services.ClienteService;
 import br.com.delta.barramento.services.SworksService;
@@ -36,6 +38,12 @@ public class SworksController {
     public ResponseEntity<ProcessoDTO> obterDetalhesProcessamento(@PathVariable String id, @RequestParam String tokenSworks){
         ProcessoDTO processamentoDetalhesResponseDTO = sworksService.obterDetalhesProcessamento(id, tokenSworks);
         return ResponseEntity.ok(processamentoDetalhesResponseDTO);
+    }
+
+    @PostMapping("/criarProcesso")
+    public ResponseEntity<CriarProcessoResponseDTO> criarProcesso (@RequestBody ProcessoRequestDTO processoDTO){
+        CriarProcessoResponseDTO processoResponseDTO = sworksService.criarProcesso(processoDTO, processoDTO.token());
+        return ResponseEntity.ok(processoResponseDTO);
     }
 
 

@@ -1,6 +1,8 @@
 package br.com.delta.barramento.client.sworks;
 
 import br.com.delta.barramento.client.sworks.dtos.AuthResponse;
+import br.com.delta.barramento.client.sworks.dtos.CriarProcessoRequestDTO;
+import br.com.delta.barramento.client.sworks.dtos.CriarProcessoResponseDTO;
 import br.com.delta.barramento.client.sworks.dtos.ProcessoDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
@@ -17,5 +19,8 @@ public interface SworksClient {
 
     @GetMapping(value = "/api/v1/Processo/{idProccess}")
     ProcessoDTO getDetailsProccess(@PathVariable String idProccess, @RequestHeader("Authorization") String authorization);
+
+    @PostMapping(value = "/api/v1/Processo")
+    CriarProcessoResponseDTO criarProcesso(@RequestBody CriarProcessoRequestDTO processoRequestDTO, @RequestHeader ("Authorization") String authorization);
 
 }

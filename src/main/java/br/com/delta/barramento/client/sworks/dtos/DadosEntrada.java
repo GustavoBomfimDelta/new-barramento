@@ -10,4 +10,9 @@ public class DadosEntrada {
     @JsonProperty(value = "Valor")
     private String valor;
 
+    public DadosEntrada(String nome, String valor) {
+        this.nome = nome;
+        this.valor = valor;
+    }
+
 }
