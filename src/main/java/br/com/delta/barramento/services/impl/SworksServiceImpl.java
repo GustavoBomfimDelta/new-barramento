@@ -7,9 +7,6 @@ import br.com.delta.barramento.services.SworksService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Service
 public class SworksServiceImpl implements SworksService {
     @Value("${USERNAME_SWORKS}")
@@ -38,6 +35,11 @@ public class SworksServiceImpl implements SworksService {
     public CriarProcessoResponseDTO criarProcesso(ProcessoRequestDTO processoDTO, String tokenSworks) {
         CriarProcessoRequestDTO dto = new CriarProcessoRequestDTO(processoDTO);
         return sworksClient.criarProcesso(dto, "Bearer " + tokenSworks);
+    }
+
+    @Override
+    public void estimularProcesso(EstimularProcessoRequestDTO estimularProcessoRequestDTO, String tokenSworks) {
+        sworksClient.estimularProcesso(estimularProcessoRequestDTO.identificador(), estimularProcessoRequestDTO.estimulo(), "Bearer " + tokenSworks);
     }
 
 
