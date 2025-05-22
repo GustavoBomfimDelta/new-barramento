@@ -42,6 +42,11 @@ public class SworksServiceImpl implements SworksService {
         sworksClient.estimularProcesso(estimularProcessoRequestDTO.identificador(), estimularProcessoRequestDTO.estimulo(), "Bearer " + tokenSworks);
     }
 
+    @Override
+    public void iniciarProcesso(String identificador, String tokenSworks){
+        sworksClient.iniciarProcesso(identificador, "Bearer " + tokenSworks);
+    }
+
 
 
 }

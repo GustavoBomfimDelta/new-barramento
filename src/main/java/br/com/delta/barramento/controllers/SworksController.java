@@ -52,6 +52,12 @@ public class SworksController {
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping("/iniciarProcesso")
+    public ResponseEntity<Void> iniciarProcesso(@RequestParam String identificador, @RequestParam String tokenSworks){
+        sworksService.iniciarProcesso(identificador, tokenSworks);
+        return ResponseEntity.ok().build();
+    }
+
 
 
 

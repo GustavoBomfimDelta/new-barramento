@@ -22,4 +22,7 @@ public interface SworksClient {
 
     @PostMapping(value = "/api/v1/Processo/EstimularProcesso")
     void estimularProcesso(@RequestParam String identificador, @RequestParam Integer estimulo, @RequestHeader ("Authorization") String authorization);
+
+    @PostMapping(value = "api/v1/Processo/IniciarProcesso/{identificador}")
+    void iniciarProcesso(@PathVariable String identificador, @RequestHeader ("Authorization") String authorization);
 }

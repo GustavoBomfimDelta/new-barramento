@@ -14,4 +14,6 @@ public interface SworksService {
     CriarProcessoResponseDTO criarProcesso(ProcessoRequestDTO processoDTO, String tokenSworks);
 
     void estimularProcesso(EstimularProcessoRequestDTO estimularProcessoRequestDTO, String tokenSworks);
+
+    void iniciarProcesso(String identificador, String tokenSworks);
 }
