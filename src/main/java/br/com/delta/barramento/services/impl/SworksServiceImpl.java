@@ -1,7 +1,10 @@
 package br.com.delta.barramento.services.impl;
 
 import br.com.delta.barramento.client.sworks.SworksClient;
-import br.com.delta.barramento.client.sworks.dtos.*;
+import br.com.delta.barramento.client.sworks.dtos.CriarProcessoRequestDTO;
+import br.com.delta.barramento.client.sworks.dtos.CriarProcessoResponseDTO;
+import br.com.delta.barramento.client.sworks.dtos.EstimularProcessoRequestDTO;
+import br.com.delta.barramento.client.sworks.dtos.ProcessoDTO;
 import br.com.delta.barramento.dtos.ProcessoRequestDTO;
 import br.com.delta.barramento.services.SworksService;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,19 +19,22 @@ public class SworksServiceImpl implements SworksService {
     private String passwordSworks;
 
     private final SworksClient sworksClient;
+    private final SworksTokenServiceImpl sworksTokenService;
 
-    public SworksServiceImpl(SworksClient sworksClient) {
+    public SworksServiceImpl(SworksClient sworksClient, SworksTokenServiceImpl sworksTokenServiceImpl) {
         this.sworksClient = sworksClient;
+        this.sworksTokenService = sworksTokenServiceImpl;
     }
 
     @Override
-    public AuthResponse authenticate() {
-        return sworksClient.getToken(usernameSworks, passwordSworks);
+    public String authenticate() {
+        return sworksTokenService.getToken();
     }
 
     @Override
     public ProcessoDTO obterDetalhesProcessamento(String id, String tokenSworks) {
-        return sworksClient.getDetailsProccess(id, "Bearer " + tokenSworks);
+        String sworksToken = sworksTokenService.getToken();
+        return sworksClient.getDetailsProccess(id, sworksToken);
     }
 
     @Override
