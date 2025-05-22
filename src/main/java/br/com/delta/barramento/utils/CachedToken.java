@@ -3,6 +3,7 @@ package br.com.delta.barramento.utils;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 public class CachedToken {
     @Getter
@@ -15,6 +16,6 @@ public class CachedToken {
     }
 
     public boolean isExpired() {
-        return LocalDateTime.now().isAfter(expiresAt.minusMinutes(1));
+        return LocalDateTime.now(ZoneOffset.UTC).isAfter(expiresAt);
     }
 }

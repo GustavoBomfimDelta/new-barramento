@@ -8,9 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
+import java.time.ZoneOffset;
 
 @Service
 public class SworksTokenServiceImpl implements SworksTokenService {
@@ -33,17 +31,15 @@ public class SworksTokenServiceImpl implements SworksTokenService {
     public synchronized String getToken() {
         if (cachedToken == null || cachedToken.isExpired()) {
             AuthResponse authResponse = sworksClient.getToken(usernameSworks, passwordSworks);
-            LocalDateTime expiresAt = parseExpires(authResponse.getExpires());
+
+            LocalDateTime expiresAt = LocalDateTime.now(ZoneOffset.UTC).plusMinutes(authResponse.getExpiresIn() - 1);
+
             String fullToken = authResponse.getTokenType() + " " + authResponse.getToken();
             cachedToken = new CachedToken(fullToken, expiresAt);
         }
         return cachedToken.getToken();
     }
 
-    private LocalDateTime parseExpires(String expires) {
-        DateTimeFormatter formatter = DateTimeFormatter.RFC_1123_DATE_TIME;
-        return ZonedDateTime.parse(expires, formatter).withZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime();
-    }
 
     @Override
     public void evictTokenCache() {
