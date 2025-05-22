@@ -6,13 +6,12 @@ import br.com.delta.barramento.client.sworks.dtos.ProcessoDTO;
 import br.com.delta.barramento.dtos.ProcessoRequestDTO;
 
 public interface SworksService {
-    String authenticate();
 
-    ProcessoDTO obterDetalhesProcessamento(String id, String tokenSworks);
+    ProcessoDTO obterDetalhesProcessamento(String id);
 
-    CriarProcessoResponseDTO criarProcesso(ProcessoRequestDTO processoDTO, String tokenSworks);
+    CriarProcessoResponseDTO criarProcesso(ProcessoRequestDTO processoDTO);
 
-    void estimularProcesso(EstimularProcessoRequestDTO estimularProcessoRequestDTO, String tokenSworks);
+    void estimularProcesso(EstimularProcessoRequestDTO estimularProcessoRequestDTO);
 
-    void iniciarProcesso(String identificador, String tokenSworks);
+    void iniciarProcesso(String identificador);
 }

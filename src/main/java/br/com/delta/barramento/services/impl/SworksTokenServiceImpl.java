@@ -2,6 +2,7 @@ package br.com.delta.barramento.services.impl;
 
 import br.com.delta.barramento.client.sworks.SworksClient;
 import br.com.delta.barramento.client.sworks.dtos.AuthResponse;
+import br.com.delta.barramento.services.SworksTokenService;
 import br.com.delta.barramento.utils.CachedToken;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Service
-public class SworksTokenServiceImpl {
+public class SworksTokenServiceImpl implements SworksTokenService {
 
     @Value("${USERNAME_SWORKS}")
     private String usernameSworks;
@@ -28,6 +29,7 @@ public class SworksTokenServiceImpl {
     }
 
 
+    @Override
     public synchronized String getToken() {
         if (cachedToken == null || cachedToken.isExpired()) {
             AuthResponse authResponse = sworksClient.getToken(usernameSworks, passwordSworks);
@@ -43,6 +45,7 @@ public class SworksTokenServiceImpl {
         return ZonedDateTime.parse(expires, formatter).withZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime();
     }
 
+    @Override
     public void evictTokenCache() {
         cachedToken = null;
     }

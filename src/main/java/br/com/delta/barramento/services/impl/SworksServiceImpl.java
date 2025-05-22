@@ -7,16 +7,11 @@ import br.com.delta.barramento.client.sworks.dtos.EstimularProcessoRequestDTO;
 import br.com.delta.barramento.client.sworks.dtos.ProcessoDTO;
 import br.com.delta.barramento.dtos.ProcessoRequestDTO;
 import br.com.delta.barramento.services.SworksService;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class SworksServiceImpl implements SworksService {
-    @Value("${USERNAME_SWORKS}")
-    private String usernameSworks;
 
-    @Value("${PASSWORD_SWORKS}")
-    private String passwordSworks;
 
     private final SworksClient sworksClient;
     private final SworksTokenServiceImpl sworksTokenService;
@@ -27,30 +22,28 @@ public class SworksServiceImpl implements SworksService {
     }
 
     @Override
-    public String authenticate() {
-        return sworksTokenService.getToken();
+    public ProcessoDTO obterDetalhesProcessamento(String id) {
+        return sworksClient.getDetailsProccess(id, getTokenSworks());
     }
 
     @Override
-    public ProcessoDTO obterDetalhesProcessamento(String id, String tokenSworks) {
-        String sworksToken = sworksTokenService.getToken();
-        return sworksClient.getDetailsProccess(id, sworksToken);
-    }
-
-    @Override
-    public CriarProcessoResponseDTO criarProcesso(ProcessoRequestDTO processoDTO, String tokenSworks) {
+    public CriarProcessoResponseDTO criarProcesso(ProcessoRequestDTO processoDTO) {
         CriarProcessoRequestDTO dto = new CriarProcessoRequestDTO(processoDTO);
-        return sworksClient.criarProcesso(dto, "Bearer " + tokenSworks);
+        return sworksClient.criarProcesso(dto, getTokenSworks());
     }
 
     @Override
-    public void estimularProcesso(EstimularProcessoRequestDTO estimularProcessoRequestDTO, String tokenSworks) {
-        sworksClient.estimularProcesso(estimularProcessoRequestDTO.identificador(), estimularProcessoRequestDTO.estimulo(), "Bearer " + tokenSworks);
+    public void estimularProcesso(EstimularProcessoRequestDTO estimularProcessoRequestDTO) {
+        sworksClient.estimularProcesso(estimularProcessoRequestDTO.identificador(), estimularProcessoRequestDTO.estimulo(), getTokenSworks());
     }
 
     @Override
-    public void iniciarProcesso(String identificador, String tokenSworks){
-        sworksClient.iniciarProcesso(identificador, "Bearer " + tokenSworks);
+    public void iniciarProcesso(String identificador){
+        sworksClient.iniciarProcesso(identificador, getTokenSworks());
+    }
+
+    private String getTokenSworks() {
+        return sworksTokenService.getToken();
     }
 
 

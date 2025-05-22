@@ -7,6 +7,7 @@ import br.com.delta.barramento.dtos.ProcessoRequestDTO;
 import br.com.delta.barramento.entities.Cliente;
 import br.com.delta.barramento.services.ClienteService;
 import br.com.delta.barramento.services.SworksService;
+import br.com.delta.barramento.services.SworksTokenService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,10 +17,12 @@ public class SworksController {
 
     private final ClienteService clienteService;
     private final SworksService sworksService;
+    private final SworksTokenService sworksTokenService;
 
-    public SworksController(ClienteService clienteService, SworksService sworksService) {
+    public SworksController(ClienteService clienteService, SworksService sworksService, SworksTokenService sworksTokenService) {
         this.clienteService = clienteService;
         this.sworksService = sworksService;
+        this.sworksTokenService = sworksTokenService;
     }
 
     @GetMapping
@@ -29,31 +32,31 @@ public class SworksController {
 
     @GetMapping("/token")
     public ResponseEntity<String> getToken() {
-        String token = sworksService.authenticate();
+        String token = sworksTokenService.getToken();
         return ResponseEntity.ok(token);
     }
 
     @GetMapping("/obterDetalhesProcessamento/{id}")
-    public ResponseEntity<ProcessoDTO> obterDetalhesProcessamento(@PathVariable String id, @RequestParam String tokenSworks) {
-        ProcessoDTO processamentoDetalhesResponseDTO = sworksService.obterDetalhesProcessamento(id, tokenSworks);
+    public ResponseEntity<ProcessoDTO> obterDetalhesProcessamento(@PathVariable String id) {
+        ProcessoDTO processamentoDetalhesResponseDTO = sworksService.obterDetalhesProcessamento(id);
         return ResponseEntity.ok(processamentoDetalhesResponseDTO);
     }
 
     @PostMapping("/criarProcesso")
     public ResponseEntity<CriarProcessoResponseDTO> criarProcesso(@RequestBody ProcessoRequestDTO processoDTO) {
-        CriarProcessoResponseDTO processoResponseDTO = sworksService.criarProcesso(processoDTO, processoDTO.token());
+        CriarProcessoResponseDTO processoResponseDTO = sworksService.criarProcesso(processoDTO);
         return ResponseEntity.ok(processoResponseDTO);
     }
 
-    @PostMapping("/estimularProcesso/{tokenSworks}")
-    public ResponseEntity<Void> estimularProcesso(@RequestBody EstimularProcessoRequestDTO processoRequestDTO, @PathVariable String tokenSworks) {
-        sworksService.estimularProcesso(processoRequestDTO, tokenSworks);
+    @PostMapping("/estimularProcesso")
+    public ResponseEntity<Void> estimularProcesso(@RequestBody EstimularProcessoRequestDTO processoRequestDTO) {
+        sworksService.estimularProcesso(processoRequestDTO);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/iniciarProcesso")
-    public ResponseEntity<Void> iniciarProcesso(@RequestParam String identificador, @RequestParam String tokenSworks) {
-        sworksService.iniciarProcesso(identificador, tokenSworks);
+    public ResponseEntity<Void> iniciarProcesso(@RequestParam String identificador) {
+        sworksService.iniciarProcesso(identificador);
         return ResponseEntity.ok().build();
     }
 

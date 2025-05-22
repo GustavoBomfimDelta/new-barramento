@@ -6,8 +6,7 @@ public record ProcessoRequestDTO(
         String cpf,
         String dataNascimento,
         String email,
-        String telefone,
-        String token
+        String telefone
 
 ) {
 }
