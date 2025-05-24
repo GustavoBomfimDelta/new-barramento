@@ -1,6 +1,7 @@
 package br.com.delta.barramento.controllers;
 
 import br.com.delta.barramento.client.sworks.dtos.AutenticarUsuarioRequestDTO;
+import br.com.delta.barramento.dtos.CadastrarUsuarioRequestDTO;
 import br.com.delta.barramento.entities.Usuario;
 import br.com.delta.barramento.services.UsuarioService;
 import org.springframework.http.ResponseEntity;
@@ -20,5 +21,11 @@ public class UsuarioController {
     public ResponseEntity<String> autenticarUsuario(@RequestBody AutenticarUsuarioRequestDTO dto) {
         String token = usuarioService.autenticarUsuario(dto);
         return ResponseEntity.ok(token);
+    }
+
+    @PostMapping("/cadastrar")
+    public ResponseEntity<Void> cadastrarUsuario(@RequestBody CadastrarUsuarioRequestDTO dto) {
+        usuarioService.criarUsuario(dto);
+        return ResponseEntity.noContent().build();
     }
 }
